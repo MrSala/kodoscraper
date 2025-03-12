@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "Kodomon Scraper",
+  "version": "1.0",
+  "description": "Scrapes data from Kodomon and stores it in Firebase.",
+  "permissions": ["storage", "identity"],
+  "host_permissions": ["https://*.codmon.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.codmon.com/*"],
+      "js": ["content.js"]
+    }
+  ]
+}

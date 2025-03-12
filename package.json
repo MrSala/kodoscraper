@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-app",
+  "name": "kodoscraper-viewer",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,12 +10,24 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "firebase": "^11.4.0",
     "nuxt": "^3.16.0",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.13.2",
-    "@tailwindcss/postcss": "^4.0.13"
-  }
+    "@tailwindcss/postcss": "^4.0.13",
+    "@types/bun": "latest",
+    "autoprefixer": "^10.4.21",
+    "nuxi": "^3.22.5",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.0.12",
+    "typescript": "^5.8.2"
+  },
+  "trustedDependencies": [
+    "@firebase/util",
+    "@parcel/watcher",
+    "protobufjs"
+  ]
 }
