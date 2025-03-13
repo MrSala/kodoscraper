@@ -1,44 +1,28 @@
 <!-- BoxItemList.vue -->
 <script setup lang="ts">
-import { ref } from 'vue'
 import BoxItem from './BoxItem.vue'
+import { useBoxItemsStore } from '../../stores/boxItems'
 
-interface BoxItemData {
-  date: string
-  pictureUri: string
-}
-
-// Sample data array (could be fetched or passed as a prop)
-const items = ref<BoxItemData[]>([
-  { date: '2025-03-13', pictureUri: 'https://placehold.co/400x600' },
-  { date: '2025-03-14', pictureUri: 'https://placehold.co/400x600' },
-  { date: '2025-03-15', pictureUri: 'https://placehold.co/400x600' }
-])
-
-// Reactive array to store the selected items
-const selectedItems = ref<BoxItemData[]>([])
-
-// Handler to update the selection state for an item
-const updateSelection = (item: BoxItemData, isSelected: boolean) => {
-  if (isSelected) {
-    if (!selectedItems.value.includes(item)) {
-      selectedItems.value.push(item)
-    }
-  } else {
-    selectedItems.value = selectedItems.value.filter((i) => i !== item)
-  }
-}
+const boxItemsStore = useBoxItemsStore()
 </script>
 
 <template>
   <div class="space-y-4">
+    <!-- Select All / Deselect All Button -->
+    <button
+      @click="boxItemsStore.toggleSelectAll"
+      class="w-full px-4 py-2 bg-blue-500 text-white rounded cursor-pointer"
+    >
+      {{ boxItemsStore.allSelected ? 'Deselect All' : 'Select All' }}
+    </button>
+
     <!-- Loop through each item and render a BoxItem -->
     <BoxItem
-      v-for="(item, index) in items"
+      v-for="(item, index) in boxItemsStore.items"
       :key="index"
       :item="item"
-      :selected="selectedItems.includes(item)"
-      @update:selected="updateSelection(item, $event)"
+      :selected="boxItemsStore.selectedItems.includes(item)"
+      @update:selected="boxItemsStore.updateSelection(item, $event)"
     />
   </div>
 </template>
