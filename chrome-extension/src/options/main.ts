@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import App from './App.vue'
+import AuthContainer from './AuthContainer.vue'
 import '../assets/tailwind.css'  // If using Tailwind
 
-createApp(App).mount('#app')
+createApp(AuthContainer).mount('#app')
