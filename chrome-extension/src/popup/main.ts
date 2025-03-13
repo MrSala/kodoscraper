@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import App from './App.vue'
+import PopupContainer from './PopupContainer.vue'
 import '../assets/tailwind.css'  // If using Tailwind
 
 // Load stored user info (if available)
@@ -9,4 +9,4 @@ chrome.storage.local.get('user', (data) => {
   }
 })
 
-createApp(App).mount('#app')
+createApp(PopupContainer).mount('#app')
