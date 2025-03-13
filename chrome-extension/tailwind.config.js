@@ -1,11 +1,14 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: [
-    "./public/popup.html", // Tailwind should scan your popup HTML
-    "./src/**/*.{vue,js,ts}" // Scan all Vue and script files in your src folder
+    "./app.vue",
+    "./components/**/*.{vue,js,ts}",
+    "./layouts/**/*.vue",
+    "./pages/**/*.vue",
+    "./plugins/**/*.ts",
   ],
   theme: {
     extend: {},
   },
   plugins: [],
-}
+};
