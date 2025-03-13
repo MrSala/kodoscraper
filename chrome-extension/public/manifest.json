@@ -3,7 +3,7 @@
   "name": "Kodomon Scraper",
   "version": "1.0",
   "description": "Scrapes data from Kodomon and stores it in Firebase.",
-  "permissions": ["storage", "identity", "tabs"],
+  "permissions": ["storage", "identity", "tabs", "scripting", "activeTab"],
   "host_permissions": ["https://*.codmon.com/*"],
   "background": {
     "service_worker": "background.js"

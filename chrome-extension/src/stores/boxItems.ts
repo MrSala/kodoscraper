@@ -4,19 +4,21 @@ import { ref, computed } from 'vue'
 
 export interface BoxItemData {
   date: string
+  title: string
   pictureUri: string
 }
 
 export const useBoxItemsStore = defineStore('boxItems', () => {
-  // Sample data array (could be fetched or passed as a prop)
-  const items = ref<BoxItemData[]>([
-    { date: '2025-03-13', pictureUri: 'https://placehold.co/400x600' },
-    { date: '2025-03-14', pictureUri: 'https://placehold.co/400x600' },
-    { date: '2025-03-15', pictureUri: 'https://placehold.co/400x600' }
-  ])
+  // Initialize with an empty array – we'll update it with scraped data.
+  const items = ref<BoxItemData[]>([])
 
   // Reactive array to store the selected items
   const selectedItems = ref<BoxItemData[]>([])
+
+  // Method to update the store with new box items (scraped data)
+  function setBoxItems(newItems: BoxItemData[]) {
+    items.value = newItems
+  }
 
   // Update the selection state for a given item
   function updateSelection(item: BoxItemData, isSelected: boolean) {
@@ -41,5 +43,5 @@ export const useBoxItemsStore = defineStore('boxItems', () => {
     }
   }
 
-  return { items, selectedItems, updateSelection, allSelected, toggleSelectAll }
+  return { items, selectedItems, setBoxItems, updateSelection, allSelected, toggleSelectAll }
 })
