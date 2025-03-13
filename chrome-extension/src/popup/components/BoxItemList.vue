@@ -10,9 +10,9 @@ interface BoxItemData {
 
 // Sample data array (could be fetched or passed as a prop)
 const items = ref<BoxItemData[]>([
-  { date: '2025-03-13', pictureUri: 'https://via.placeholder.com/50' },
-  { date: '2025-03-14', pictureUri: 'https://via.placeholder.com/50' },
-  { date: '2025-03-15', pictureUri: 'https://via.placeholder.com/50' }
+  { date: '2025-03-13', pictureUri: 'https://placehold.co/400x600' },
+  { date: '2025-03-14', pictureUri: 'https://placehold.co/400x600' },
+  { date: '2025-03-15', pictureUri: 'https://placehold.co/400x600' }
 ])
 
 // Reactive array to store the selected items

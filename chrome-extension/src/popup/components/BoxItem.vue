@@ -16,22 +16,25 @@ const emits = defineEmits<{
   (e: 'update:selected', value: boolean): void
 }>()
 
-const toggleSelection = (event: Event) => {
-  const target = event.target as HTMLInputElement
-  emits('update:selected', target.checked)
+// Toggle selection by simply inverting the current value.
+const toggleSelection = () => {
+  emits('update:selected', !props.selected)
 }
 </script>
 
 <template>
-  <div class="flex items-center p-4 border rounded-md shadow-sm">
-    <!-- Checkbox for selection -->
+  <div
+    class="flex items-center p-4 border rounded-md shadow-sm cursor-pointer"
+    @click="toggleSelection"
+  >
+    <!-- Checkbox for selection with click event stopped to prevent double toggling -->
     <input
       type="checkbox"
       :checked="selected"
-      @change="toggleSelection"
+      @click.stop="toggleSelection"
       class="mr-4"
     />
-    <!-- Picture (uses placeholder if none provided) -->
+    <!-- Picture (uses a placeholder if item.pictureUri is falsy) -->
     <img
       :src="item.pictureUri || 'https://via.placeholder.com/50'"
       alt="Picture"
