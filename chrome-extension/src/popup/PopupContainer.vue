@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { onAuthStateChanged } from 'firebase/auth'
 import SignInButton from './components/SignInButton.vue'
 import { auth } from '../firebase.ts'
+import BoxItemList from './components/BoxItemList.vue'
 
 // Create a reactive variable to store the current user
 const user = ref(null)
@@ -24,7 +25,7 @@ onMounted(() => {
     </div>
     <!-- Optionally, render something else if the user is logged in -->
     <div v-else>
-      <p>Welcome, {{ user.email }}</p>
+      <BoxItemList />
     </div>
   </div>
 </template>
