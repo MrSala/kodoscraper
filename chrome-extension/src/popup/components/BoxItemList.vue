@@ -2,6 +2,7 @@
 <script setup lang="ts">
 import BoxItem from './BoxItem.vue'
 import { useBoxItemsStore } from '../../stores/boxItems'
+import ActionButton from '../../components/ActionButton.vue'
 
 const boxItemsStore = useBoxItemsStore()
 </script>
@@ -9,13 +10,7 @@ const boxItemsStore = useBoxItemsStore()
 <template>
   <div class="space-y-4">
     <!-- Select All / Deselect All Button -->
-    <button
-      @click="boxItemsStore.toggleSelectAll"
-      class="w-full px-4 py-2 bg-blue-500 text-white rounded cursor-pointer"
-    >
-      {{ boxItemsStore.allSelected ? 'Deselect All' : 'Select All' }}
-    </button>
-
+    <ActionButton  v-if="boxItemsStore.items.length > 0" :label="boxItemsStore.allSelected ? 'Deselect All' : 'Select All'" @click="boxItemsStore.toggleSelectAll" :custom-class="'w-full'" />
     <!-- Loop through each item and render a BoxItem -->
     <BoxItem
       v-for="(item, index) in boxItemsStore.items"

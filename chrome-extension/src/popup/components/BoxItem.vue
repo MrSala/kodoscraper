@@ -4,7 +4,7 @@ import { defineProps, defineEmits } from 'vue'
 
 interface BoxItemData {
   date: string
-  pictureUri: string
+  thumbnailUrl: string
 }
 
 const props = defineProps<{
@@ -20,11 +20,14 @@ const emits = defineEmits<{
 const toggleSelection = () => {
   emits('update:selected', !props.selected)
 }
+
+console.log({item: props.item})
 </script>
 
 <template>
   <div
-    class="flex items-center p-4 border rounded-md shadow-sm cursor-pointer"
+    class="flex items-center p-4 rounded-md cursor-pointer hover:bg-gray-50 shadow-md transition-colors duration-200 ease-in-out"
+    :class="{ 'bg-gray-150': selected, 'bg-white': !selected }"
     @click="toggleSelection"
   >
     <!-- Checkbox for selection with click event stopped to prevent double toggling -->
@@ -34,9 +37,9 @@ const toggleSelection = () => {
       @click.stop="toggleSelection"
       class="mr-4"
     />
-    <!-- Picture (uses a placeholder if item.pictureUri is falsy) -->
+    <!-- Picture (uses a placeholder if item.thumbnailUrl is falsy) -->
     <img
-      :src="item.pictureUri || 'https://via.placeholder.com/50'"
+      :src="item.thumbnailUrl || '/400x600.svg'"
       alt="Picture"
       class="w-12 h-12 object-cover rounded-full mr-4"
     />
@@ -46,6 +49,7 @@ const toggleSelection = () => {
     </div>
   </div>
 </template>
+
 
 <style scoped>
 /* Add additional styling as needed */

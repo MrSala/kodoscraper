@@ -3,53 +3,45 @@ console.log('Background script loaded')
 // Listen for messages from other scripts (e.g., content script or popup)
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log('Message received in background script:', message)
-  if (message.action === "scrapeData") {
-    const tabId = message.tabId;
-    if (!tabId) {
-      sendResponse({ error: "No tabId provided" });
-      return;
-    }
-    chrome.scripting.executeScript({
-      target: { tabId },
-      // This function runs in the context of the active tab
-      func: () => {
-        // Check if URL contains the required string
-        if (!document.location.href.includes("https://parents.codmon.com/home")) {
-          return { error: "URL not matched" };
-        }
-        const articles = Array.from(document.querySelectorAll('div[role="article"]'));
-        // Use reduce to extract and filter the articles based on title
-        return articles.reduce((acc, article) => {
-          // Extract the date string from the <span> inside .homeCard_date
-          const dateElem = article.querySelector('.homeCard_date span');
-          const date = dateElem ? dateElem.innerText.trim() : '';
+  if (message.action === "fetchTimeline") {
+    // Use the provided page number, default to 1 if not provided
+    const page = message.page || 1;
+    const apiUrl = `https://ps-api.codmon.com/api/v2/parent/timeline/?listpage=${page}&search_type[]=new_all&service_id=21220&current_flag=0&use_image_edge=true&__env__=myapp`;
 
-          // Extract the title text from .homeCard__title
-          const titleElem = article.querySelector('.homeCard__title');
-          const title = titleElem ? titleElem.innerText.trim() : '';
-
-          // Only include articles where the title contains '連絡帳'
-          if (!title.includes('連絡帳')) {
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(json => {
+        if (json.success && Array.isArray(json.data)) {
+          // Process the items using reduce
+          const items = json.data.reduce((acc, item) => {
+            const date = item.display_date;
+            const thumbnail_url = item.thumbnail_url;
+            // Only include items of kind "4"
+            if (item.kind !== "4") {
+              return acc;
+            }
+            console.log({ thumbnail_url });
+            // Attempt to parse content; if it’s a JSON string, extract memo
+            let memo = "";
+            try {
+              const parsed = JSON.parse(item.content);
+              memo = parsed.memo || "";
+            } catch (e) {
+              // If parsing fails, fall back to the raw content
+              memo = item.content;
+            }
+            acc.push({ date, thumbnailUrl: thumbnail_url, memo });
             return acc;
-          }
-
-          // Extract the image source from the <img> inside ons-carousel-item
-          const carouselElem = article.querySelector('ons-carousel-item img');
-          const pictureUri = carouselElem ? carouselElem.getAttribute('src') || '' : '';
-
-          acc.push({ date, title, pictureUri });
-          return acc;
-        }, []);
-      }
-    }, (results) => {
-      if (chrome.runtime.lastError) {
-        console.error(chrome.runtime.lastError);
-        sendResponse({ error: chrome.runtime.lastError.message });
-      } else {
-        sendResponse({ result: results[0].result });
-      }
-    });
-    // Return true to indicate asynchronous response.
+          }, []);
+          sendResponse({ result: items });
+        } else {
+          sendResponse({ error: "Invalid API response" });
+        }
+      })
+      .catch(error => {
+        sendResponse({ error: error.message });
+      });
+    // Return true to indicate that we'll respond asynchronously.
     return true;
   }
 

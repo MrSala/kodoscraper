@@ -5,7 +5,7 @@ import { ref, computed } from 'vue'
 export interface BoxItemData {
   date: string
   title: string
-  pictureUri: string
+  thumbnailUrl: string
 }
 
 export const useBoxItemsStore = defineStore('boxItems', () => {
